@@ -13,6 +13,7 @@ const UserSchema = new Schema({
     email: {
         type: String,
         required: true,
+        unique: true
     },
     contact: {
         type: String,
@@ -21,6 +22,17 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
+    },
+    referralLink: {
+        type: String,
+        required: true
+    },
+    referralCount: {
+        type: Number,
+        default: 0
+    },
+    referrer: {
+        type: String,
     }
 })
 
