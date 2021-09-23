@@ -32,7 +32,16 @@ const UserSchema = new Schema({
         default: 0
     },
     referrer: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        required: false
+    },
+    rewards: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Reward',
+    }],
+    stars: {
+        type: Schema.Types.ObjectId,
+        ref: "Stars"
     }
 })
 
