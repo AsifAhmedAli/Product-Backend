@@ -10,30 +10,40 @@ const starsController = {
             const { email, starsCount } = req.body;
 
             if (!email || !starsCount) {
-                res.status(400).json({
+                return res.status(400).json({
                     message: 'Please provide email and stars to be sent'
                 })
             }
 
             const user = await User.findOne({ email });
-            user.password = null;
 
-            const totalStars = await Stars.findOne({ user_id: senderId });
-            if (totalStars.currentStars < starsCount) {
-                return res.status(400).json({
-                    message: 'You dont have enough stars to send'
-                })
+            if (user) {
+                user.password = null;
+
+                // If sending to self
+                if (senderId === user._id.toString()) {
+                    return res.status(500).json({ message: 'You cannot send stars to yourself' });
+                }
+
+                // if the user already has that number of stars
+                const totalStars = await Stars.findOne({ user_id: senderId });
+                if (totalStars.currentStars < starsCount) {
+                    return res.status(400).json({
+                        message: 'You dont have enough stars to send'
+                    })
+                }
+
+                // send stars
+                await Stars.updateOne({ user_id: user._id }, { $inc: { currentStars: starsCount } });
+                const temp = await Stars.updateOne({ user_id: senderId }, { $inc: { currentStars: -(starsCount) } });
+                console.log(temp)
+                return res.status(200).json({ message: "Stars sent succesfully" })
             }
 
-            // Check if the user already has that number of stars
-            if (user.stars < starsCount) {
-                return res.status(500).json({ error: "You dont have enough stars" })
+            else {
+                return res.status(500).json({ message: 'User not found' })
             }
 
-            // send stars
-            const temp = await Stars.findOneAndUpdate({ user_id: user._id }, { $inc: { currentStars: starsCount } });
-
-            return res.status(200).json({ message: "Stars sent succesfully" })
         }
         catch (err) {
             res.status(400).json(err.message);
