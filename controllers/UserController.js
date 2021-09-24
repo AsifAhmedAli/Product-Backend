@@ -8,7 +8,7 @@ const Token = require('../model/Token');
 const crypto = require('crypto');
 const emailVerifier = require('../utils/nodemailer');
 const jwt = require('jsonwebtoken');
-const referralUpdate = require('../helpers/referrals');
+const referralUpdate = require('../helpers/referralUpdate');
 
 const userControllers = {
     signup: async (req, res) => {
@@ -61,6 +61,8 @@ const userControllers = {
                                 }
 
                             }
+
+
                             // const token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
                             // token.save(async (err, data) => {
                             //     if (err) {

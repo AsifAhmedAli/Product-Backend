@@ -18,6 +18,7 @@ connectDB();
 app.use("/user", require("./routes/user"));
 app.use("/other", require("./routes/other"));
 app.use("/subscription", require("./routes/subscription"));
+app.use("/stars", require("./routes/stars"));
 
 // Start Server
 app.listen(PORT, () => {
