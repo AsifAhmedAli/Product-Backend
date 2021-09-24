@@ -21,11 +21,13 @@ npm start
 ```
 
 <br></br>
-## Testing routes
+## Testing Routes
 Postman Test Routes: 
   - http://localhost:5000/user/signin  
   - http://localhost:5000/user/signup
- 
-Protected Route:
-> Provide token of logged in user inside "Authorization" header to access the route
+
+### protected Routes
+> Provide Token inside "Authorization" header to access the route
+  - http://localhost:5000/subscription
+  - http://localhost:5000/stars/send
   - http://localhost:5000/other
