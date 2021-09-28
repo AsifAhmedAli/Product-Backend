@@ -1,4 +1,4 @@
-# Auth Boilerplate with Node
+# Server Node
 
 ## Description
 RESTful API with Node.js, Express, and Mongoose.
