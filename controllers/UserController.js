@@ -1,5 +1,6 @@
 const User = require('../model/User');
 const Stars = require('../model/Stars');
+const Salary = require('../model/Salary');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validateRegister = require('../validators/register');
@@ -9,6 +10,7 @@ const crypto = require('crypto');
 const emailVerifier = require('../utils/nodemailer');
 const jwt = require('jsonwebtoken');
 const referralUpdate = require('../helpers/referralUpdate');
+const BuyStars = require('../model/BuyStars');
 
 const userControllers = {
     signup: async (req, res) => {
@@ -38,8 +40,18 @@ const userControllers = {
                     referralLink: `http://localhost:5000/user/signup?referrer=${MongoUserId}`,
                 });
 
-                // Initialize the stars
-                const stars = await new Stars({
+                // Initialize global stars schema
+                await new Stars({
+                    user_id: MongoUserId
+                }).save();
+
+                // Initialize the Salary schema
+                await new Salary({
+                    user_id: MongoUserId
+                }).save()
+
+                // Initialize the Bought Stars schema
+                await new BuyStars({
                     user_id: MongoUserId
                 }).save();
 
@@ -49,7 +61,6 @@ const userControllers = {
                         if (err) throw err;
 
                         userData.password = hash;
-                        userData.stars = stars;
                         const ifSaved = await userData.save();
                         if (ifSaved) {
                             // Check if referral link is present

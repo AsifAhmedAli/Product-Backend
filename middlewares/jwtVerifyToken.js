@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
         }
         // const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
-            if (err) res.json({ auth: false, msg: "You are not authenticated, try logging in again" });
+            if (err) return res.json({ auth: false, msg: "You are not authenticated, try logging in again" });
             else {
                 req.token = token;
                 req.data = authData;
