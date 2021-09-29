@@ -1,7 +1,8 @@
 # Server Node
 
-## Description
-RESTful API with Node.js, Express, and Mongoose.
+RestApi for the Product of Mexil Software Solutions with Node & Express
+
+# Pre-requisites
 
 ## Set the environment variables
 replace `.example.env` with `.env`
@@ -20,8 +21,7 @@ Then start the server
 npm start
 ```
 
-<br></br>
-## Testing Routes
+# Routes
 Postman Test Routes: 
   - http://localhost:5000/user/signin (***Request Data***: email, password)  
   - http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
