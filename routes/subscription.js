@@ -3,7 +3,7 @@ const router = express.Router();
 const verifyToken = require('../middlewares/jwtVerifyToken');
 const User = require('../model/User');
 const Reward = require('../model/Reward');
-const updateGlobalStars = require('../helpers/updateGlobalStars')
+const { addReward } = require('../helpers/rewardHelpers');
 
 const rewardReferrer = async (user) => {
 
@@ -17,28 +17,13 @@ const rewardReferrer = async (user) => {
         }
 
         // Add rewards to the referrer
-        await addReward(user);
+        await addReward(user, "subscription");
 
         return true;
 
     } catch (error) {
         throw error.message;
     }
-}
-
-const addReward = async (user) => {
-    const newReward = await Reward.create({
-        user_id: user._id,
-        category: "subscription",
-        stars: 50000,
-    })
-
-    // Add new reward to the user
-    user.rewards.push(newReward);
-    await user.save();
-
-    // update the global stars for the user
-    await updateGlobalStars(user, newReward);
 }
 
 router.post('/', verifyToken, async (req, res) => {
@@ -58,7 +43,7 @@ router.post('/', verifyToken, async (req, res) => {
 
         // Then update subscription reward
         if (user.rewards.length === 0) {
-            await addReward(user);
+            await addReward(user, "subscription");
             return res.status(200).json({ message: "Subscription updated" })
         }
 

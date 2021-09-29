@@ -1,7 +1,5 @@
 const Stars = require("../model/Stars")
 const BuyStars = require("../model/BuyStars")
-const Salary = require("../model/Salary")
-const User = require('../model/User');
 
 const clearStars = async (userId) => {
     try {

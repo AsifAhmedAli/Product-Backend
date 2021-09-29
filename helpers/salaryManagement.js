@@ -1,7 +1,7 @@
 const Stars = require("../model/Stars")
 const Salary = require("../model/Salary")
 const User = require('../model/User');
-const clearStars = require('../helpers/clearStars');
+const clearStars = require('./starsHelpers');
 const BuyStars = require("../model/BuyStars");
 
 const updateSalary = async (id, paidAmount) => {

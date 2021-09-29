@@ -20,7 +20,9 @@ app.use("/user", require("./routes/user"));
 app.use("/other", require("./routes/other"));
 app.use("/subscription", require("./routes/subscription"));
 app.use("/stars", require("./routes/stars"));
+app.use("/reward", require("./routes/reward"));
 app.use("/payment/easypaysa", require("./routes/payment/easypaysa"));
+app.use("/youtube", require("./routes/youtube"));
 
 // Run cron-job
 // runCronSchedule()
