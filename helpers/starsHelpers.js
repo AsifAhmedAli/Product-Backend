@@ -15,4 +15,21 @@ const clearStars = async (userId) => {
 
 }
 
-module.exports = clearStars
+
+const updateGlobalStars = async (user, newReward) => {
+    try {
+        const oldStars = await Stars.findOne({ user_id: user._id });
+
+        const newStars = +(oldStars.currentStars + newReward.stars);
+        await Stars.findOneAndUpdate({ user_id: user._id }, { currentStars: newStars });
+
+        console.log("Global Stars Updated");
+
+        return true;
+
+    } catch (error) {
+        throw error.message
+    }
+}
+
+module.exports = { clearStars, updateGlobalStars }

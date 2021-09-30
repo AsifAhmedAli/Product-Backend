@@ -18,6 +18,10 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
+    role: {
+        type: String,
+        required: true
+    },
     contact: {
         type: String,
         required: true,
@@ -41,11 +45,7 @@ const UserSchema = new Schema({
     rewards: [{
         type: Schema.Types.ObjectId,
         ref: 'Reward',
-    }],
-    stars: {
-        type: Schema.Types.ObjectId,
-        ref: "Stars"
-    }
+    }]
 })
 
 const User = mongoose.model('User', UserSchema);

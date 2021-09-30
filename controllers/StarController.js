@@ -12,7 +12,7 @@ const starsController = {
 
             if (!email || !starsCount) {
                 return res.status(400).json({
-                    message: 'Please provide email and stars to be sent'
+                    error: 'Please provide email and stars to be sent'
                 })
             }
 
@@ -23,31 +23,31 @@ const starsController = {
 
                 // If sending to self
                 if (senderId === user._id.toString()) {
-                    return res.status(500).json({ message: 'You cannot send stars to yourself' });
+                    return res.status(400).json({ error: 'You cannot send stars to yourself' });
                 }
 
                 // if the user already has that number of stars
                 const totalStars = await Stars.findOne({ user_id: senderId });
                 if (totalStars.currentStars < starsCount) {
                     return res.status(400).json({
-                        message: 'You dont have enough stars to send'
+                        error: 'You dont have enough stars to send'
                     })
                 }
 
-                // send stars
+                // send stars and update sender's stars
                 await Stars.updateOne({ user_id: user._id }, { $inc: { currentStars: starsCount } });
-                const temp = await Stars.updateOne({ user_id: senderId }, { $inc: { currentStars: -(starsCount) } });
-                console.log(temp)
+                await Stars.updateOne({ user_id: senderId }, { $inc: { currentStars: -(starsCount) } });
+
                 return res.status(200).json({ message: "Stars sent succesfully" })
             }
 
             else {
-                return res.status(500).json({ message: 'User not found' })
+                return res.status(404).json({ error: 'User not found' })
             }
 
         }
         catch (err) {
-            res.status(400).json(err.message);
+            res.status(500).json({ error: err.message });
         }
 
     },
@@ -63,7 +63,7 @@ const starsController = {
 
             if (!pricePaid) {
                 return res.status(400).json({
-                    message: 'Please provide correct amount'
+                    error: 'Please provide correct amount'
                 })
             }
 
@@ -85,12 +85,12 @@ const starsController = {
             }
 
             else {
-                return res.status(500).json({ message: 'User not found' })
+                return res.status(404).json({ error: 'User not found' })
             }
 
         }
         catch (err) {
-            res.status(400).json(err.message);
+            res.status(500).json({ error: err.message });
         }
 
     }

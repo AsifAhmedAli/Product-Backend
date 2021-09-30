@@ -15,10 +15,13 @@ router.post('/add', verifyToken, async (req, res) => {
         }
 
         await addReward(user, category);
+
+        console.log("Reward Added for Category: ", category);
+
         return res.status(200).json({ message: 'reward Added' });
 
     } catch (error) {
-        res.status(500).json(error.message);
+        res.status(500).json({ error: error.message });
     }
 })
 

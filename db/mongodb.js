@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const updateSalary = require('../helpers/salaryManagement');
 
 // Database connection
 function connectDB() {

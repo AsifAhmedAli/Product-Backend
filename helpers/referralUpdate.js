@@ -10,12 +10,13 @@ const referralUpdate = async (referrerId, createdUserId) => {
         }
 
         // Update the referrer's referral count
-        const updateCount = await User.updateOne({ _id: referrerId }, { $inc: { referralCount: 1 } });
+        await User.updateOne({ _id: referrerId }, { $inc: { referralCount: 1 } });
 
         // Update the target's referrer field
-        const updateReferrer = await User.updateOne({ _id: createdUserId }, { $set: { referrer: referrerId } });
+        await User.updateOne({ _id: createdUserId }, { $set: { referrer: referrerId } });
 
         console.log("Updated the referrals")
+
         return { message: "Updated the Referrals" }
 
     } catch (error) {

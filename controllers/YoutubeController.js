@@ -22,7 +22,7 @@ const getYoutubeVideos = async (req, res) => {
 
     request(channelVideosUrl, (error, response, body) => {
         if (error) {
-            res.status(500).json(error.message);
+            res.status(400).json({ error: error.message });
         }
         if (response) {
             // length of response body

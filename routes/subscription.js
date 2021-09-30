@@ -13,7 +13,7 @@ const rewardReferrer = async (user) => {
 
         if (alreadySubscribed) {
             if (alreadySubscribed.category === 'subscription')
-                return res.status(400).json({ message: 'You already have a subscription reward' });
+                return res.status(400).json({ error: 'You already have a subscription reward' });
         }
 
         // Add rewards to the referrer
@@ -51,12 +51,12 @@ router.post('/', verifyToken, async (req, res) => {
 
         if (alreadySubscribed) {
             if (alreadySubscribed.category === 'subscription')
-                return res.status(400).json({ message: 'You already have a subscription reward' });
+                return res.status(400).json({ error: 'You already have a subscription reward' });
         }
 
 
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(500).json({ error: error.message })
     }
 
 

@@ -1,4 +1,4 @@
-const updateGlobalStars = require('../helpers/updateGlobalStars');
+const { updateGlobalStars } = require('../helpers/starsHelpers');
 const Reward = require('../model/Reward');
 
 const addReward = async (user, category) => {
