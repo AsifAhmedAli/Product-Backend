@@ -22,11 +22,11 @@ npm start
 ```
 
 # Routes
-Postman Test Routes: 
-  - http://localhost:5000/user/signin (***Request Data***: email, password)  
-  - http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
+### User Routes 
+  - **POST** http://localhost:5000/user/signin (***Request Data***: email, password)  
+  - **POST** http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
 
-### protected Routes
+### Protected Routes
 > Provide Token inside "Authorization" header to access the route
 
 > Header Format: `{ Authorization: "Bearer TokenHash" }`
