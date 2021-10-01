@@ -48,11 +48,13 @@ const dashboardController = {
 
     makeAdmin: async (req, res) => {
         try {
-            const user = await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { role: 'Admin' } });
+            const user = await User.findById(req.params.id);
             if (user.role === 'Admin') {
                 return res.status(400).json({ message: "User already Admin" });
             }
-            return res.status(200).json({ message: `${user.name} is now ad Admin` });
+            user.role = 'Admin';
+            await user.save();
+            return res.status(200).json({ message: `${user.name} is now an Admin` });
 
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -61,10 +63,12 @@ const dashboardController = {
 
     removeAdmin: async (req, res) => {
         try {
-            const user = await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { role: 'User' } });
+            const user = await User.findById(req.params.id);
             if (user.role !== 'Admin') {
                 return res.status(400).json({ message: "User is not an Admin" });
             }
+            user.role = 'User';
+            await user.save();
             return res.status(200).json({ message: `${user.name} is removed as Admin` });
 
         } catch (error) {
