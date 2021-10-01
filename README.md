@@ -1,4 +1,4 @@
-# Server Node
+# Product Node API
 
 RestApi for the Product of Mexil Software Solutions with Node & Express
 
@@ -22,17 +22,26 @@ npm start
 ```
 
 # Routes
-Postman Test Routes: 
-  - http://localhost:5000/user/signin (***Request Data***: email, password)  
-  - http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
+### User Routes 
+  - **POST** http://localhost:5000/user/signin (***Request Data***: email, password)  
+  - **POST** http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
 
-### protected Routes
+### Protected Routes
 > Provide Token inside "Authorization" header to access the route
 
 > Header Format: `{ Authorization: "Bearer TokenHash" }`
-  - http://localhost:5000/subscription (***Request Data***: Authorization-Header)
-  - http://localhost:5000/stars/send   (***Request Data***: Authorization-Header, email, starsCount)
-  - http://localhost:5000/stars/buy    (***Request Data***: Authorization-Header, pricePaid)
-  - http://localhost:5000/reward/add    (***Request Data***: Authorization-Header, category)
-  - http://localhost:5000/youtube/generateLink    (***Request Data***: Authorization-Header)
-  - http://localhost:5000/other        (***Request Data***: )
+  - **POST** http://localhost:5000/subscription (***Request Data***: Authorization-Header)
+  - **POST** http://localhost:5000/stars/send   (***Request Data***: Authorization-Header, email, starsCount)
+  - **POST** http://localhost:5000/stars/buy    (***Request Data***: Authorization-Header, pricePaid)
+  - **POST** http://localhost:5000/reward/add    (***Request Data***: Authorization-Header, category)
+  - **GET** http://localhost:5000/youtube/generateLink    (***Request Data***: Authorization-Header)
+  - **POST** http://localhost:5000/other        (***Request Data***: )
+
+### Dashboard Routes
+> All protected with Authorization Token and User Role (Admin)
+
+  - **GET** http://localhost:5000/users
+  - **POST** http://localhost:5000/user/disable/:id
+  - **POST** http://localhost:5000/user/enable/:id
+  - **POST** http://localhost:5000/user/makeadmin/:id
+  - **POST** http://localhost:5000/user/removeadmin/:id
