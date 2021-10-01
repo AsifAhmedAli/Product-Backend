@@ -45,7 +45,11 @@ const UserSchema = new Schema({
     rewards: [{
         type: Schema.Types.ObjectId,
         ref: 'Reward',
-    }]
+    }],
+    enabled: {
+        type: Boolean,
+        default: true
+    }
 })
 
 const User = mongoose.model('User', UserSchema);

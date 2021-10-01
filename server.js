@@ -23,6 +23,16 @@ app.use("/stars", require("./routes/stars"));
 app.use("/reward", require("./routes/reward"));
 app.use("/payment/easypaysa", require("./routes/payment/easypaysa"));
 app.use("/youtube", require("./routes/youtube"));
+app.use("/dashboard", require("./routes/dashboard"));
+
+app.use("*", (req, res) => {
+    res.status(404).json({
+        status: 404,
+        message: "Page not found"
+    });
+})
+
+app.set('trust proxy', true);       // For proxy ip address
 
 // Run cron-job
 // runCronSchedule()

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middlewares/jwtVerifyToken');
+const { verifyToken } = require('../middlewares/jwtVerifyToken');
 const User = require('../model/User');
 const Reward = require('../model/Reward');
 const { addReward } = require('../helpers/rewardHelpers');

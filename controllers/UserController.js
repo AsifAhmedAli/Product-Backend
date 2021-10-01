@@ -104,12 +104,17 @@ const userControllers = {
                 return res.status(404).json({ error: "Email not found" });
             }
 
+            // Check if blocked
+            if (!user.enabled) {
+                return res.status(400).json({ error: "User is blocked" });
+            }
+
             const isMatch = await bcrypt.compare(password, user.password);
 
 
             if (isMatch) {
 
-                const { password, ...userWithoutPassword } = user;
+                user.password = null;
 
                 // Create JWT Payload
                 const payload = {
@@ -126,7 +131,7 @@ const userControllers = {
                     },
                     (err, token) => {
                         res.status(200).json({
-                            ...userWithoutPassword,
+                            user,
                             token: "Bearer " + token
                         });
                     }
