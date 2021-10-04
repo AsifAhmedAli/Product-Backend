@@ -1,15 +1,32 @@
-const User = require('../model/User');
-const geoip = require('geoip-lite');
+const User = require('../../model/User');
+const getLocation = require('../../lib/location');
 
-const dashboardController = {
+const dashboardUserController = {
     getUsers: async (req, res) => {
-
-        var geo = geoip.lookup(req.ip);
-        console.log("Location", geo);
+        getLocation(req.ip);
 
         try {
             const allUsers = await User.find({});
-            return res.status(200).json(allUsers);
+
+            // Total Count of users Registered
+            const countUsers = await User.countDocuments({});
+
+            return res.status(200).json({
+                users: allUsers,
+                totalCount: countUsers
+            });
+
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+
+    getUser: async (req, res) => {
+        const { id } = req.params;
+        try {
+            const user = await User.findById(id);
+
+            return res.status(200).json(user);
 
         } catch (error) {
             res.status(500).json({ error: error.message });
@@ -77,4 +94,4 @@ const dashboardController = {
     },
 }
 
-module.exports = dashboardController
+module.exports = dashboardUserController

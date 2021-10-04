@@ -5,7 +5,7 @@ const BuyStars = require('../model/BuyStars');
 const starsController = {
     send: async (req, res) => {
         // Sender id
-        const senderId = req.data.id;
+        const senderId = req.user.id;
 
         try {
             const { email, starsCount } = req.body;
@@ -53,7 +53,7 @@ const starsController = {
     },
     buy: async (req, res) => {
         // Sender id
-        const buyer = req.data.id;
+        const buyer = req.user.id;
 
         try {
             const { pricePaid } = req.body;

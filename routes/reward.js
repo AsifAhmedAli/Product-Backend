@@ -8,7 +8,7 @@ router.post('/add', verifyToken, async (req, res) => {
 
     try {
         const { category } = req.body;
-        const user = await User.findById(req.data.id);
+        const user = await User.findById(req.user.id);
 
         if (!category) {
             return res.status(400).json({ error: 'Category is required' });

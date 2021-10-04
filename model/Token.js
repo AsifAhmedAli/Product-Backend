@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const patchHistory = require("mongoose-patch-history");
 const Schema = mongoose.Schema;
 
 const tokenSchema = new Schema({

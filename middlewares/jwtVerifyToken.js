@@ -12,7 +12,7 @@ const verifyToken = async (req, res, next) => {
             if (err) return res.json({ auth: false, msg: "Invalid Token" });
             else {
                 req.token = token;
-                req.data = authData;
+                req.user = authData;
             }
         });
 
@@ -26,7 +26,7 @@ const verifyToken = async (req, res, next) => {
 const verifyRole = (role) => {
     return (req, res, next) => {
 
-        if (req.data.role !== role) {
+        if (req.user.role !== role) {
             return res.status(401).json({ error: "You are not authorized to access this route" })
         }
         next()

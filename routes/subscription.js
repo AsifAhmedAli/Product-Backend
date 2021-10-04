@@ -12,6 +12,7 @@ const rewardReferrer = async (user) => {
         const alreadySubscribed = await Reward.findOne({ _id: user.rewards[0]._id });
 
         if (alreadySubscribed) {
+
             if (alreadySubscribed.category === 'subscription')
                 return res.status(400).json({ error: 'You already have a subscription reward' });
         }
@@ -31,7 +32,7 @@ router.post('/', verifyToken, async (req, res) => {
     // Buy a subscription ===> waiting on implementation
 
     try {
-        const user = await User.findById(req.data.id);
+        const user = await User.findById(req.user.id);
 
         // Check if the user has a referrer, then provide awards to the referrer
         if (user.referrer) {
@@ -47,6 +48,7 @@ router.post('/', verifyToken, async (req, res) => {
             return res.status(200).json({ message: "Subscription updated" })
         }
 
+        // If not a referral, and already subscribed
         const alreadySubscribed = await Reward.findById({ _id: user.rewards[0]._id });
 
         if (alreadySubscribed) {

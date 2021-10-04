@@ -32,7 +32,7 @@ app.use("*", (req, res) => {
     });
 })
 
-app.set('trust proxy', true);       // For proxy ip address
+app.set('trust proxy', true);       // For proxy ip addresses
 
 // Run cron-job
 // runCronSchedule()
