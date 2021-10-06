@@ -29,18 +29,22 @@ npm start
 ### Request Data Sample for Postman Testing
 ```
   {
-    "name": "awais",
+    "name": "kazmi",
     "username": "something",
     "contact": "123456789",
     "email": "awais@gmail.com",
     "password": "51214786",
     "role": "User",
-    "starsCount": 50,
+    "starsCount": 1000,
     "newPrice": 25000,
-    "pricePaid": 1000,
+    "pricePaid": 2000,
     "newStarsCategoryPrice": 35000,
     "youtubeVideoId": "wjouERPsFso",
-    "category": "subscription"
+    "category": "somethingnew",
+    "title": "Mexil Corportate",
+    "description": "We provide flexible solutions",
+    "starsRequired": 200,
+    "starsReward": 3000
 }
 ```
 
@@ -53,6 +57,12 @@ npm start
   - **POST** http://localhost:5000/stars/buy    (***Request Data***: Authorization-Header, pricePaid)
   - **POST** http://localhost:5000/reward/add    (***Request Data***: Authorization-Header, category)
   - **GET** http://localhost:5000/youtube/generateLink    (***Request Data***: Authorization-Header)
+
+` Survey management Routes for Admin and User `
+
+  - **POST** http://localhost:5000/survey/add             (For Admin to create Survey)  (***Request Data***: Authorization-Header, title, description, mcqs(array of objects))
+  - **POST** http://localhost:5000/startype/submit        (For user to submit Survey)  (***Request Data***: Authorization-Header )
+
 
 ### Dashboard Routes
 > All protected with Authorization Token and User Role (Admin)
@@ -74,4 +84,3 @@ npm start
 
   - **GET** http://localhost:5000/startypes                 (***Request Data***: Authorization-Header)
   - **POST** http://localhost:5000/startype/update          (***Request Data***: Authorization-Header, category, newStars )
-
