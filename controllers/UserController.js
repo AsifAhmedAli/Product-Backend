@@ -40,9 +40,6 @@ const userControllers = {
                         referralLink: `http://localhost:5000/user/signup?referrer=${MongoUserId}`,
                     });
 
-                    // Initialize Related Schemas
-                    await initializeSchemas(MongoUserId);
-
                     bcrypt.genSalt(10, (err, salt) => {
                         if (err) throw err;
                         bcrypt.hash(userData.password, salt, async (err, hash) => {
@@ -50,6 +47,10 @@ const userControllers = {
 
                             userData.password = hash;
                             const ifSaved = await userData.save();
+
+                            // Initialize Related Schemas
+                            await initializeSchemas(MongoUserId);
+
                             if (ifSaved) {
                                 // Check if referral link is present
                                 if (req.query.referrer) {

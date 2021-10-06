@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const SalarySchema = new Schema({
     amount: {
@@ -13,6 +14,8 @@ const SalarySchema = new Schema({
 }, {
     timestamps: true
 })
+
+SalarySchema.plugin(diffHistory.plugin)
 
 const Salary = mongoose.model('Salary', SalarySchema);
 module.exports = Salary;

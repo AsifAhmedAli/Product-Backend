@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const StarsSchema = new Schema({
     currentStars: {
@@ -14,6 +15,8 @@ const StarsSchema = new Schema({
 }, {
     timestamps: true
 })
+
+StarsSchema.plugin(diffHistory.plugin)
 
 const Stars = mongoose.model('Stars', StarsSchema);
 module.exports = Stars;

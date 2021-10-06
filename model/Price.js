@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const PriceSchema = new Schema({
     subscription: {
@@ -29,6 +30,8 @@ const PriceSchema = new Schema({
 }, {
     timestamps: true
 })
+
+PriceSchema.plugin(diffHistory.plugin)
 
 const Price = mongoose.model('Price', PriceSchema);
 module.exports = Price;

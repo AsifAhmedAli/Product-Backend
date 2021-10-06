@@ -4,13 +4,14 @@ const { verifyToken } = require("../middlewares/jwtVerifyToken")
 const { addReward } = require('../helpers/rewardHelpers');
 const User = require('../model/User');
 const mongoose = require("mongoose");
+const RewardCategory = require('../model/RewardCategory');
+const StarsCategory = require('../model/StarsCategory');
 
 router.post('/', verifyToken, async (req, res) => {
-    const { category } = req.body;
-    const user = await User.findById(req.user.id);
-    // get model history
-    console.log(mongoose.model('Users_history'));
-    // await addReward(user, category)
+
+    // generate RewardCategories and StarCategories
+    await new RewardCategory({}).save();
+    await new StarsCategory({}).save();
 
     res.send('Hello World!');
 })

@@ -1,4 +1,5 @@
 const epxress = require("express");
+const dashboardLogsController = require("../controllers/dashboard/logs");
 const dashboardPriceController = require("../controllers/dashboard/prices");
 const dashboardStarsCategoryController = require("../controllers/dashboard/stars");
 const dashboardUserController = require("../controllers/dashboard/users");
@@ -21,5 +22,8 @@ router.post("/price/update", verifyToken, verifyRole('Admin'), dashboardPriceCon
 router.get("/startypes", verifyToken, verifyRole('Admin'), dashboardStarsCategoryController.getStarCategories);
 router.post("/startype/update", verifyToken, verifyRole('Admin'), dashboardStarsCategoryController.updateStarsCategory);
 // router.post("/startype/add", verifyToken, verifyRole('Admin'), dashboardStarsCategoryController.addStarsCategory);
+
+// Logs Management Routes for admin
+router.get("/logs/:id", verifyToken, verifyRole('Admin'), dashboardLogsController.getLogs);
 
 module.exports = router;

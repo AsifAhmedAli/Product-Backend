@@ -67,6 +67,15 @@ const starsController = {
                 })
             }
 
+            // Check if user has bought subscription
+            const ifSubscribed = await User.findById(buyer);
+
+            if (!ifSubscribed.subscription) {
+                return res.status(400).json({
+                    error: 'You haven\'t bought subscription yet'
+                })
+            }
+
             const user = await User.findOne({ buyer });
 
             if (user) {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const diffHistory = require('mongoose-diff-history/diffHistory')
 const Schema = mongoose.Schema;
 
 const StarsCategorySchema = new Schema({
@@ -26,9 +27,15 @@ const StarsCategorySchema = new Schema({
         type: Number,
         default: 15000
     },
+    survey_completion: {
+        type: Number,
+        default: 7500
+    }
 }, {
     timestamps: true
 })
+
+StarsCategorySchema.plugin(diffHistory.plugin)
 
 const StarsCategory = mongoose.model('StarsCategory', StarsCategorySchema);
 module.exports = StarsCategory;

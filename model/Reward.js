@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const RewardSchema = new Schema({
     stars: {
@@ -16,6 +17,8 @@ const RewardSchema = new Schema({
 }, {
     timestamps: true
 })
+
+RewardSchema.plugin(diffHistory.plugin)
 
 const Reward = mongoose.model('Reward', RewardSchema);
 module.exports = Reward;

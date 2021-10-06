@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const UserSchema = new Schema({
     name: {
@@ -49,8 +50,25 @@ const UserSchema = new Schema({
     enabled: {
         type: Boolean,
         default: true
+    },
+    stars: {
+        type: Schema.Types.ObjectId,
+        ref: 'Stars',
+    },
+    boughtStars: {
+        type: Schema.Types.ObjectId,
+        ref: 'BuyStars',
+    },
+    salary: {
+        type: Schema.Types.ObjectId,
+        ref: 'Salary',
+    },
+    subscription: {
+        type: Boolean,
+        default: false
     }
 })
 
+UserSchema.plugin(diffHistory.plugin)
 const User = mongoose.model('User', UserSchema);
 module.exports = User;

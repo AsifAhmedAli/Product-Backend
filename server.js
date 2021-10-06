@@ -24,6 +24,7 @@ app.use("/reward", require("./routes/reward"));
 app.use("/payment/easypaysa", require("./routes/payment/easypaysa"));
 app.use("/youtube", require("./routes/youtube"));
 app.use("/dashboard", require("./routes/dashboard"));
+app.use("/survey", require("./routes/survey"));
 
 app.use("*", (req, res) => {
     res.status(404).json({
