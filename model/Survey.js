@@ -26,7 +26,11 @@ const surveySchema = new Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'User',
             },
-            answers: [Number]
+            mcqAnswers: [Number],
+            radioAnswers: [Number],
+            checkboxAnswers: [Number],
+            fillBlankAnswer: String,
+            trueFalseAnswers: [Number],
         }
     ],
     starsRequired: {
@@ -36,7 +40,36 @@ const surveySchema = new Schema({
     starsReward: {
         type: Number,
         default: 0
-    }
+    },
+    radioQuestions: [
+        {
+            title: {
+                type: String,
+                required: true
+            },
+            options: [String],
+
+        }
+    ],
+    checkboxes: {
+        title: {
+            type: String,
+        },
+        options: [String],
+    },
+    fillBlank: {
+        title: {
+            type: String,
+        }
+    },
+    trueFalse: [
+        {
+            title: {
+                type: String,
+            },
+            options: [String]
+        }
+    ]
 })
 
 const Survey = mongoose.model('Survey', surveySchema);

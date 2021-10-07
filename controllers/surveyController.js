@@ -6,7 +6,7 @@ const User = require("../model/User");
 const surveyController = {
     addSurvey: async (req, res) => {
 
-        const { starsRequired, starsReward } = req.body;
+        const { title, description, starsRequired, starsReward } = req.body;
 
         // Only admin can add survey
         const mcqsFrontend = [
@@ -24,17 +24,58 @@ const surveyController = {
             },
         ]
 
-        const { title, description } = req.body;
+        const radioQuestions = [
+            {
+                title: "What is your favorite color ?",
+                options: ["Red", "Blue", "Green", "Yellow", "Black"]
+            },
+            {
+                title: "What is your favorite animal ?",
+                options: ["Dog", "Cat", "Lion", "Tiger", "Elephant"]
+            }
+        ]
+
+        const checkboxes = {
+            title: "What do you want to play",
+            options: ["Football", "Cricket", "Tennis", "Badminton", "Basketball"]
+        }
+
+        const fillBlank = {
+            title: "What is your name ?",
+            answer: ""
+        }
+
+        const trueFalse = [
+            {
+                title: "Is this true ?",
+                options: ["True", "False"]
+            },
+            {
+                title: "Is this false ?",
+                options: ["True", "False"]
+            }
+        ]
 
         const newSurvey = await new Survey({
             title,
             description,
             starsRequired,
-            starsReward
+            starsReward,
+            checkboxes,
+            fillBlank,
+            trueFalse
         });
 
-        for (let i = 0; i < mcqsFrontend.length; i++) {
-            await newSurvey.mcqs.push(mcqsFrontend[i]);
+        if (mcqsFrontend) {
+            for (let i = 0; i < mcqsFrontend.length; i++) {
+                await newSurvey.mcqs.push(mcqsFrontend[i]);
+            }
+        }
+
+        if (radioQuestions) {
+            for (let i = 0; i < radioQuestions.length; i++) {
+                await newSurvey.radioQuestions.push(radioQuestions[i]);
+            }
         }
 
         newSurvey.save((err, survey) => {
@@ -49,8 +90,13 @@ const surveyController = {
     submitSurvey: async (req, res) => {
 
         try {
+            // const { mcqsAnswers, radioAnswers, checkboxAnswers, fillBlankAnswer, trueFalseAnswers } = req.body;
             // Answers submitted by user
-            const mcqsFrontend = [1, 7, 5]
+            const mcqsAnswers = [1, 7, 2];
+            const radioAnswers = [1, 2];
+            const checkboxAnswers = [1, 2];
+            const fillBlankAnswer = "something";
+            const trueFalseAnswers = [1, 2];
 
             const userID = req.user.id;
             const { surveyID } = req.params;
@@ -76,21 +122,39 @@ const surveyController = {
                 return res.status(404).json({ error: "Survey not found" });
             }
 
-            if (mcqsFrontend.length <= 0) {
-                return res.status(400).json({ error: "Please answer some questions" });
+            // // If some fields are not in the survey then mark them empty
+            // typeof (mcqsAnswers) === undefined ? mcqsAnswers = [] : mcqsAnswers;
+            // typeof (radioAnswers) === undefined ? radioAnswers = [] : radioAnswers;
+            // typeof (checkboxAnswers) === undefined ? checkboxAnswers = [] : checkboxAnswers;
+            // typeof (fillBlankAnswer) === undefined ? fillBlankAnswer = "" : fillBlankAnswer;
+            // typeof (trueFalseAnswers) === undefined ? trueFalseAnswers = [] : trueFalseAnswers;
+
+            if ((typeof (mcqsAnswers) !== "undefined" && mcqsAnswers.length !== foundSurvey.mcqs.length) ||
+                (typeof (radioAnswers) !== "undefined" && radioAnswers.length !== foundSurvey.radioQuestions.length) ||
+                (typeof (checkboxAnswers) !== "undefined" && checkboxAnswers.length <= 0) ||
+                (typeof (fillBlankAnswer) !== "undefined" && fillBlankAnswer === "") ||
+                (typeof (trueFalseAnswers) !== "undefined" && trueFalseAnswers.length !== foundSurvey.trueFalse.length)) {
+                return res.status(400).json({ error: "Survey not completed" });
             }
 
+            // Check if the user has already submitted the survey
             const alreadySubmitted = foundSurvey.responses.find(elem => {
                 return elem.user.equals(foundUser._id);
             });
 
-            // Check if the user has already submitted the survey
             if (alreadySubmitted) {
                 return res.status(400).json({ error: "You have already submitted this survey" });
             }
 
             // Add the user's response to the survey and update the user's stars
-            foundSurvey.responses.push({ user: userID, answers: mcqsFrontend });
+            foundSurvey.responses.push({
+                user: userID,
+                mcqAnswers: mcqsAnswers || [],
+                radioAnswers: radioAnswers || [],
+                checkboxAnswers: checkboxAnswers || [],
+                fillBlankAnswer: fillBlankAnswer || "",
+                trueFalseAnswers: trueFalseAnswers || []
+            });
 
             userStars.currentStars -= foundSurvey.starsRequired;
             await userStars.save();
