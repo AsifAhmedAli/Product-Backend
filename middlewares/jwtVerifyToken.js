@@ -9,11 +9,11 @@ const verifyToken = async (req, res, next) => {
         }
 
         jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
-            if (err) return res.json({ auth: false, msg: "Invalid Token" });
-            else {
-                req.token = token;
-                req.user = authData;
+            if (err) {
+                return res.status(400).json({ auth: false, msg: "Invalid Token" });
             }
+            req.token = token;
+            req.user = authData;
         });
 
         next()

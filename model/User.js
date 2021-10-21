@@ -25,7 +25,7 @@ const UserSchema = new Schema({
     },
     contact: {
         type: String,
-        required: true,
+        required: false,
     },
     password: {
         type: String,
@@ -33,7 +33,7 @@ const UserSchema = new Schema({
     },
     referralLink: {
         type: String,
-        required: true
+        required: false
     },
     referralCount: {
         type: Number,
@@ -66,6 +66,15 @@ const UserSchema = new Schema({
     subscription: {
         type: Boolean,
         default: false
+    },
+    serviceProvider: {
+        type: String,
+    },
+    googleId: {
+        type: Number,
+    },
+    facebookId: {
+        type: Number,
     }
 })
 

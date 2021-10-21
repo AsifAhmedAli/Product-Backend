@@ -3,14 +3,23 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validateRegister = require('../validators/register');
 const validateLogin = require('../validators/login');
-const Token = require('../model/Token');
-const crypto = require('crypto');
-const emailVerifier = require('../utils/nodemailer');
+// const Token = require('../model/Token');
+// const crypto = require('crypto');
+// const emailVerifier = require('../utils/nodemailer');
 const jwt = require('jsonwebtoken');
 const referralUpdate = require('../helpers/referralUpdate');
 const initializeSchemas = require('../helpers/initializeSchemas');
 
 const userControllers = {
+    me: async (req, res) => {
+        try {
+            const decoded = jwt.verify(req.token, process.env.JWT_SECRET);
+            return res.send(decoded);
+        } catch (err) {
+            res.status(500).send({ error: err.message });
+        }
+    },
+
     signup: async (req, res) => {
         const { name, username, email, contact, password } = req.body;
 
@@ -132,7 +141,7 @@ const userControllers = {
                     },
                     (err, token) => {
                         res.status(200).json({
-                            user,
+                            success: true,
                             token: "Bearer " + token
                         });
                     }

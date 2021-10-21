@@ -25,6 +25,7 @@
     "mongoose-history": "^0.8.0",
     "mongoose-patch-history": "^2.0.0",
     "nodemailer": "^6.6.3",
+    "querystring": "^0.2.1",
     "request": "^2.88.2",
     "validator": "^13.6.0"
   }

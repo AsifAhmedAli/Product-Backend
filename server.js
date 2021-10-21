@@ -25,6 +25,9 @@ app.use("/payment/easypaysa", require("./routes/payment/easypaysa"));
 app.use("/youtube", require("./routes/youtube"));
 app.use("/dashboard", require("./routes/dashboard"));
 app.use("/survey", require("./routes/survey"));
+app.use("/auth/google", require("./routes/googleAuth"));
+app.use("/auth/facebook", require("./routes/facebookAuth"));
+app.use("/friend", require("./routes/friend"));
 
 app.use("*", (req, res) => {
     res.status(404).json({

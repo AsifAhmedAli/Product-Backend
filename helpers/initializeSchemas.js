@@ -20,6 +20,7 @@ const initializeSchemas = async (MongoUserId) => {
             user_id: MongoUserId
         }).save();
 
+        // Update the user schema
         User.findById(MongoUserId).then(user => {
             user.stars = stars;
             user.salary = salary;
