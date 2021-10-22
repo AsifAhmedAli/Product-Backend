@@ -27,8 +27,7 @@ const userControllers = {
         const { errors, isValid } = validateRegister(req.body);
 
         if (!isValid) {
-            console.log("There are errors:", errors)
-            return res.status(400).json(errors);
+            return res.status(400).json({ errors });
         }
 
         try {
@@ -137,7 +136,7 @@ const userControllers = {
                     payload,
                     process.env.JWT_SECRET,
                     {
-                        expiresIn: 604800 // 1 week in seconds
+                        expiresIn: 3600 // 1 week in seconds
                     },
                     (err, token) => {
                         res.status(200).json({

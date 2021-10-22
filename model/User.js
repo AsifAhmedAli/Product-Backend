@@ -75,7 +75,9 @@ const UserSchema = new Schema({
     },
     facebookId: {
         type: Number,
-    }
+    },
+    pendingFriends: [this],
+    friends: [this]
 })
 
 UserSchema.plugin(diffHistory.plugin)

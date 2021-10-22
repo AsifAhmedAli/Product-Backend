@@ -1,14 +1,14 @@
 const express = require('express');
+const User = require('../model/User');
 const router = express.Router();
+const friendController = require('../controllers/friendController');
+const { verifyToken } = require('../middlewares/jwtVerifyToken');
 
-router.get('/', (req, res) => {
-    res.send('Friend');
-})
+router.get('/', verifyToken, friendController.getFriends)
 
 // Send friend request
-router.post('/request/send', (req, res) => {
-
-})
+router.post('/add', verifyToken, friendController.addFriend)
+router.post('/accept/:id', verifyToken, friendController.acceptFriend)
 
 
 module.exports = router;
