@@ -48,7 +48,7 @@ npm start
 }
 ```
 
-### Protected Routes
+### User Routes
 > Provide Token inside "Authorization" header to access the route
 
 > Header Format: `{ Authorization: "Bearer TokenHash" }`
@@ -63,6 +63,11 @@ npm start
   - **POST** http://localhost:5000/survey/add             (For Admin to create Survey)  (***Request Data***: Authorization-Header, title, description, mcqs(array of objects))
   - **POST** http://localhost:5000/startype/submit        (For user to submit Survey)  (***Request Data***: Authorization-Header )
 
+` Friend management Routes for User `
+
+  - **GET** http://localhost:5000/friend             (Get Friends)  (***Request Data***: Authorization-Header)
+  - **POST** http://localhost:5000/friend/add        (Send Friend Request)  (***Request Data***: Authorization-Header, recieverEmail )
+  - **POST** http://localhost:5000/friend/accept        (Accept Friend Request)  (***Request Data***: Authorization-Header, id )
 
 ### Dashboard Routes
 > All protected with Authorization Token and User Role (Admin)
