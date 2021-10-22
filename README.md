@@ -28,10 +28,10 @@ npm start
 
 ### Request Data Sample for Postman Testing
 ```
-  {
+ {
     "name": "kazmi",
-    "username": "something",
-    "contact": "123456789",
+    "username": "ahmads180372",
+    "contact": "631412323",
     "email": "awais@gmail.com",
     "password": "51214786",
     "role": "User",
@@ -44,7 +44,8 @@ npm start
     "title": "Mexil Corportate",
     "description": "We provide flexible solutions",
     "starsRequired": 200,
-    "starsReward": 3000
+    "starsReward": 3000,
+    "recieverEmail": "ahmad@gmail.com"
 }
 ```
 
