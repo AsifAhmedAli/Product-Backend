@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const { TokenExpiredError } = jwt;
+
 const verifyToken = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
@@ -10,16 +12,19 @@ const verifyToken = async (req, res, next) => {
 
         jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
             if (err) {
-                return res.status(400).json({ auth: false, msg: "Invalid Token" });
+                return res.status(401).json({ auth: false, error: "Invalid Token" });
+            }
+            if (err instanceof TokenExpiredError) {
+                return res.status(401).json({ auth: false, error: "Unauthorized! Access Token was expired!" });
             }
             req.token = token;
             req.user = authData;
+            next()
         });
 
-        next()
 
     } catch (e) {
-        res.status(401).send({ error: 'Something went wrong, try refreshing the page and try again' })
+        res.status(401).json({ error: 'Something went wrong, try refreshing the page and try again' })
     }
 }
 

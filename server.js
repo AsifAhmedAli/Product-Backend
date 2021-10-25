@@ -3,14 +3,18 @@ const cors = require("cors");
 const dotenv = require('dotenv');
 const connectDB = require('./db/mongodb');
 const runCronSchedule = require('./lib/cronjob');
+const apicache = require("apicache");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const cache = apicache.middleware;
 
 // Middlewares
 dotenv.config();
 app.use(express.json());
 app.use(cors());
+app.set('trust proxy', 1);       // For reverse proxy servers
+app.use(cache('30 seconds'))
 
 // Connect to Database
 connectDB();
@@ -29,6 +33,11 @@ app.use("/auth/google", require("./routes/googleAuth"));
 app.use("/auth/facebook", require("./routes/facebookAuth"));
 app.use("/friend", require("./routes/friend"));
 
+
+// Run cron-job
+// runCronSchedule()
+
+// If no route is matched, return 404
 app.use("*", (req, res) => {
     res.status(404).json({
         status: 404,
@@ -36,10 +45,19 @@ app.use("*", (req, res) => {
     });
 })
 
-app.set('trust proxy', true);       // For proxy ip addresses
+// Error middleware
+app.use((err, req, res, next) => {
+    console.error("mMiddewlware");
+    const status = err.statusCode || 500;
+    const message = err.message;
+    const data = err.data;
+    res.status(status).json({
+        success: false,
+        error: message,
+        data: data
+    });
+})
 
-// Run cron-job
-// runCronSchedule()
 
 // Start Server
 app.listen(PORT, () => {

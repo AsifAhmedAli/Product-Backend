@@ -1,5 +1,4 @@
 const express = require('express');
-const User = require('../model/User');
 const router = express.Router();
 const friendController = require('../controllers/friendController');
 const { verifyToken } = require('../middlewares/jwtVerifyToken');

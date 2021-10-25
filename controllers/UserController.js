@@ -136,7 +136,7 @@ const userControllers = {
                     payload,
                     process.env.JWT_SECRET,
                     {
-                        expiresIn: 3600 // 1 week in seconds
+                        expiresIn: process.env.JWT_ACCESS_EXPIRE // 1 hour
                     },
                     (err, token) => {
                         res.status(200).json({

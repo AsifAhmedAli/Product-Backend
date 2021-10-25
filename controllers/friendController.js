@@ -3,15 +3,26 @@ const User = require("../model/User");
 const friendController = {
 
     // get all friends
-    getFriends: async (req, res) => {
-        // Get all friends
-        User.findById(req.user.id).populate("friends").exec((err, user) => {
-            if (err) {
-                res.status(400).json({ error: err.message });
-            } else {
-                res.status(200).json({ friends: user.friends });
+    getFriends: async (req, res, next) => {
+        try {
+            // Check if user exists
+            const user = await User.exists({ _id: req.user.id });
+            if (!user) {
+                return res.status(404).json({
+                    message: "User not found"
+                });
             }
-        })
+
+            User.findById(req.user.id).populate("friends").exec((err, user) => {
+                if (err) {
+                    return res.status(400).json({ error: "Error getting friends" });
+                } else {
+                    return res.status(200).json({ friends: user.friends });
+                }
+            })
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
     },
 
     // Add a friend
@@ -29,6 +40,10 @@ const friendController = {
 
             if (!reciever) {
                 return res.status(400).json({ error: "Reciever does not exist" });
+            }
+
+            if (reciever._id === loggedInUser._id) {
+                return res.status(400).json({ error: "You cannot add yourself as a friend" });
             }
 
             // Get the pending friend request ids
@@ -101,6 +116,11 @@ const friendController = {
             // Check if username existsz
             if (id === undefined || id === null) {
                 return res.status(400).json({ error: "No user's Id passed" });
+            }
+
+            // accepting your own friend request
+            if (loggedInUser._id === friend._id) {
+                return res.status(400).json({ error: "Why are you accepting you own friend Request" });
             }
 
             // Check if the friend exists
