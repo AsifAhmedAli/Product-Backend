@@ -14,7 +14,7 @@ RefreshTokenSchema.statics.createToken = async function (user) {
     let expiredAt = new Date();
 
     expiredAt.setSeconds(
-        expiredAt.getSeconds() + 8400
+        expiredAt.getSeconds() + process.env.JWT_REFRESH_EXPIRATION
     );
 
     let _token = crypto.randomBytes(16).toString('hex');

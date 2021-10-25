@@ -4,9 +4,11 @@ const { TokenExpiredError } = jwt;
 
 const verifyToken = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').replace('Bearer ', '');
+        let token = req.header('Authorization');
 
-        if (!token) {
+        if (token) {
+            token = token.replace('Bearer ', '');
+        } else {
             return res.status(401).json({ error: "Please provide token" })
         }
 
@@ -22,8 +24,8 @@ const verifyToken = async (req, res, next) => {
         })
 
 
-    } catch (e) {
-        res.status(401).json({ error: 'Something went wrong, try refreshing the page and try again' })
+    } catch (err) {
+        res.status(401).json({ error: err.message })
     }
 }
 
