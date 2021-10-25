@@ -10,17 +10,16 @@ const verifyToken = async (req, res, next) => {
             return res.status(401).json({ error: "Please provide token" })
         }
 
-        jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(401).json({ auth: false, error: "Invalid Token" });
+                if (err instanceof TokenExpiredError) {
+                    return res.status(401).json({ error: "Token expired" })
+                }
+                return res.status(401).json({ error: "Invalid token" })
             }
-            if (err instanceof TokenExpiredError) {
-                return res.status(401).json({ auth: false, error: "Unauthorized! Access Token was expired!" });
-            }
-            req.token = token;
-            req.user = authData;
-            next()
-        });
+            req.user = decoded;
+            next();
+        })
 
 
     } catch (e) {

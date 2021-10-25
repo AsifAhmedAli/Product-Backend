@@ -3,12 +3,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validateRegister = require('../validators/register');
 const validateLogin = require('../validators/login');
-// const Token = require('../model/Token');
-// const crypto = require('crypto');
-// const emailVerifier = require('../utils/nodemailer');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const referralUpdate = require('../helpers/referralUpdate');
 const initializeSchemas = require('../helpers/initializeSchemas');
+const RefreshToken = require('../model/RefreshToken');
 
 const userControllers = {
     me: async (req, res) => {
@@ -69,15 +68,6 @@ const userControllers = {
                                     }
 
                                 }
-
-                                // const token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
-                                // token.save(async (err, data) => {
-                                //     if (err) {
-                                //         return res.status(400).json({ error: "Error saving token" });
-                                //     }
-                                //     // Send email (use credentials of SendGrid)
-                                //     emailVerifier(user, token, req);
-                                // })
                                 return res.status(200).json({ message: "User created successfully" });
                             }
 
@@ -132,19 +122,26 @@ const userControllers = {
                 };
 
                 // Sign token
-                jwt.sign(
-                    payload,
-                    process.env.JWT_SECRET,
-                    {
-                        expiresIn: process.env.JWT_ACCESS_EXPIRE // 1 hour
-                    },
-                    (err, token) => {
-                        res.status(200).json({
-                            success: true,
-                            token: "Bearer " + token
-                        });
+                jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRATION}` }, async (err, token) => {
+                    if (err) {
+                        return res.status(500).json({ error: "Error signing token" });
                     }
-                );
+
+                    // Save refresh token
+                    const refreshToken = await RefreshToken.createToken(user);
+
+                    return res.status(200).json({
+                        token: "Bearer " + token,
+                        refreshToken: refreshToken,
+                        user: {
+                            name: user.name,
+                            username: user.username,
+                            email: user.email,
+                            role: user.role,
+                        }
+                    });
+                })
+
             } else {
                 return res.status(400).json({ error: "Password incorrect" });
             }

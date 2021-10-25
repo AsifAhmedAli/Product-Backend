@@ -32,6 +32,7 @@ app.use("/survey", require("./routes/survey"));
 app.use("/auth/google", require("./routes/googleAuth"));
 app.use("/auth/facebook", require("./routes/facebookAuth"));
 app.use("/friend", require("./routes/friend"));
+app.use('/token/refresh', require('./routes/refreshtoken'));
 
 
 // Run cron-job
