@@ -14,7 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 app.set('trust proxy', 1);       // For reverse proxy servers
-app.use(cache('30 seconds'))
+// app.use(cache('30 seconds'))
 
 // Connect to Database
 connectDB();
@@ -33,6 +33,8 @@ app.use("/auth/google", require("./routes/googleAuth"));
 app.use("/auth/facebook", require("./routes/facebookAuth"));
 app.use("/friend", require("./routes/friend"));
 app.use('/token/refresh', require('./routes/refreshtoken'));
+app.use('/verifyemail', require('./routes/email'));
+
 
 
 // Run cron-job
@@ -48,7 +50,7 @@ app.use("*", (req, res) => {
 
 // Error middleware
 app.use((err, req, res, next) => {
-    console.error("mMiddewlware");
+    console.error("Error Middleware");
     const status = err.statusCode || 500;
     const message = err.message;
     const data = err.data;

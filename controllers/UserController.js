@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const referralUpdate = require('../helpers/referralUpdate');
 const initializeSchemas = require('../helpers/initializeSchemas');
 const RefreshToken = require('../model/RefreshToken');
+const sendVerificationEmail = require('../helpers/verificationEmail');
+const EmailUrl = require('../model/EmailUrl');
 
 const userControllers = {
     me: async (req, res) => {
@@ -58,6 +60,7 @@ const userControllers = {
                             // Initialize Related Schemas
                             await initializeSchemas(MongoUserId);
 
+
                             if (ifSaved) {
                                 // Check if referral link is present
                                 if (req.query.referrer) {
@@ -66,9 +69,14 @@ const userControllers = {
                                     if (!referrerCountIncrement) {
                                         return res.status(404).json({ error: "Referrer not found" });
                                     }
-
                                 }
-                                return res.status(200).json({ message: "User created successfully" });
+
+                                // Send verification email
+                                sendVerificationEmail({ ...ifSaved, password: null }, (err, info) => {
+                                    if (err) throw err;
+                                });
+
+                                return res.status(200).json({ message: "Registration Successful, Please verify your email" });
                             }
 
                             return res.status(400).json({ error: "Error creating user" });
@@ -105,7 +113,12 @@ const userControllers = {
 
             // Check if blocked
             if (!user.enabled) {
-                return res.status(400).json({ error: "User is blocked" });
+                return res.status(400).json({ error: "User is blocked, Contact Administration" });
+            }
+
+            // Check if verified
+            if (!user.verified) {
+                return res.status(400).json({ error: "User is not verified" });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
@@ -147,6 +160,35 @@ const userControllers = {
             }
         }
         catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    },
+
+    verifyUserEmail: async (req, res) => {
+        const { email } = req.body;
+
+        try {
+            const user = await User.findOne({ email });
+
+            if (!user) {
+                return res.status(404).json({ error: "Email not Registered" });
+            }
+
+            if (user.verified) {
+                return res.status(400).json({ error: "User is already verified" });
+            }
+
+            user.verified = true;
+            const ifSaved = await user.save();
+
+
+            if (ifSaved) {
+                return res.status(200).json({ message: "User verified successfully" });
+            }
+
+            return res.status(400).json({ error: "Error verifying user" });
+
+        } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }

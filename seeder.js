@@ -4,7 +4,9 @@ const Reward = require('./model/Reward')
 const BuyStars = require('./model/BuyStars')
 const Salary = require('./model/Salary')
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
+const RewardCategory = require('./model/RewardCategory')
+const StarsCategory = require('./model/StarsCategory')
+require("dotenv").config();
 
 (async () => {
     const args = process.argv[2];
@@ -18,10 +20,19 @@ const dotenv = require("dotenv").config();
         await mongoose.connection?.db?.dropDatabase();
     }
 
+    const createCategories = async () => {
+        await new RewardCategory({}).save();
+        await new StarsCategory({}).save();
+    }
+
     // Drop Database
 
     if (args === "drop") {
         await dropDB();
+    }
+
+    if (args === 'categories') {
+        await createCategories();
     }
 
 })()

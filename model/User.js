@@ -51,6 +51,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: true
     },
+    verified: {
+        type: Boolean,
+        default: false
+    },
     stars: {
         type: Schema.Types.ObjectId,
         ref: 'Stars',
