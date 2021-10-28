@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         }
 
         if (!verifyEmail) {
-            return res.status(404).json({ error: 'Verification Link Not found' });
+            return res.status(404).json({ error: 'Invalid Verification Link' });
         }
 
         if (foundUser.verified === true) {

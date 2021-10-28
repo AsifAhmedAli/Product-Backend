@@ -9,7 +9,7 @@ const friendController = {
             const user = await User.exists({ _id: req.user.id });
             if (!user) {
                 return res.status(404).json({
-                    message: "User not found"
+                    message: "Invalid User, Please signup to use the product"
                 });
             }
 

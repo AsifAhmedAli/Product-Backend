@@ -71,10 +71,10 @@ const userControllers = {
                                     }
                                 }
 
-                                // Send verification email
-                                sendVerificationEmail({ ...ifSaved, password: null }, (err, info) => {
-                                    if (err) throw err;
-                                });
+                                // // Send verification email
+                                // sendVerificationEmail({ ...ifSaved, password: null }, (err, info) => {
+                                //     if (err) throw err;
+                                // });
 
                                 return res.status(200).json({ message: "Registration Successful, Please verify your email" });
                             }
@@ -116,10 +116,10 @@ const userControllers = {
                 return res.status(400).json({ error: "User is blocked, Contact Administration" });
             }
 
-            // Check if verified
-            if (!user.verified) {
-                return res.status(400).json({ error: "User is not verified" });
-            }
+            // // Check if verified
+            // if (!user.verified) {
+            //     return res.status(400).json({ error: "User is not verified" });
+            // }
 
             const isMatch = await bcrypt.compare(password, user.password);
 
