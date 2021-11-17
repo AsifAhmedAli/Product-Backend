@@ -7,17 +7,18 @@ function isEmpty(obj) {
 module.exports = function validateRegisterInput(data) {
     let errors = {};
 
+    if (!data) {
+        errors.message = "No data was sent";
+        return errors;
+    }
+
     // Convert empty fields to an empty string so we can use validator functions
-    data.name = !data.name ? "" : data.name;
     data.email = !data.email ? "" : data.email;
     data.password = !data.password ? "" : data.password;
+    data.confirmPassword = !data.confirmPassword ? "" : data.confirmPassword;
     data.contact = !data.contact ? "" : data.contact;
     data.username = !data.username ? "" : data.username;
 
-    // Name checks
-    if (Validator.isEmpty(data.name)) {
-        errors.name = "Name field is required";
-    }
     // Username checks
     if (Validator.isEmpty(data.username)) {
         errors.username = "username field is required";
@@ -39,10 +40,17 @@ module.exports = function validateRegisterInput(data) {
         errors.password = "Password field is required";
     }
 
-    if (!Validator.isLength(data.password, { min: 7, max: 30 })) {
-        errors.password = "Password must be at least 7 characters";
+    if (Validator.isEmpty(data.confirmPassword)) {
+        errors.confirmPassword = "Confirm Password field is required";
     }
 
+    if (!Validator.isLength(data.password, { min: 8, max: 30 })) {
+        errors.password = "Password must be at least 8 characters";
+    }
+
+    if (!Validator.equals(data.password, data.confirmPassword)) {
+        errors.confirmPassword = "Passwords must match";
+    }
 
     return {
         errors,

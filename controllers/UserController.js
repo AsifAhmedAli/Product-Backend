@@ -22,7 +22,7 @@ const userControllers = {
     },
 
     signup: async (req, res) => {
-        const { name, username, email, contact, password } = req.body;
+        const { username, email, contact, password, confirmPassword } = req.body;
 
         // if request data is valid
         const { errors, isValid } = validateRegister(req.body);
@@ -40,7 +40,6 @@ const userControllers = {
                     const MongoUserId = mongoose.Types.ObjectId();
                     const userData = await new User({
                         _id: MongoUserId,
-                        name,
                         username,
                         email: email.toLowerCase(),
                         password,

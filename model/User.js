@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 const diffHistory = require('mongoose-diff-history/diffHistory')
 
 const UserSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-    },
     image: {
         type: String,
     },

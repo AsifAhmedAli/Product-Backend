@@ -33,7 +33,7 @@ app.use("/auth/google", require("./routes/googleAuth"));
 app.use("/auth/facebook", require("./routes/facebookAuth"));
 app.use("/friend", require("./routes/friend"));
 app.use('/token/refresh', require('./routes/refreshtoken'));
-app.use('/verifyemail', require('./routes/email'));
+app.use('/email/verify', require('./routes/email'));
 
 
 
@@ -50,7 +50,6 @@ app.use("*", (req, res) => {
 
 // Error middleware
 app.use((err, req, res, next) => {
-    console.error("Error Middleware");
     const status = err.statusCode || 500;
     const message = err.message;
     const data = err.data;
