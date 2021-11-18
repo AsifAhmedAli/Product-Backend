@@ -14,8 +14,13 @@ const EmailUrl = require('../model/EmailUrl');
 const userControllers = {
     me: async (req, res) => {
         try {
-            const decoded = jwt.verify(req.token, process.env.JWT_SECRET);
-            return res.send(decoded);
+            const user = req.user;
+            if (!user) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+            const userData = await User.findById(user.id)
+            userData.password = undefined;
+            return res.json({ userData });
         } catch (err) {
             res.status(500).send({ error: err.message });
         }
