@@ -146,7 +146,7 @@ const userControllers = {
                 return res.cookie('jwt_tokens', { token, refreshToken }, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
-                    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRATION * 1000)
+                    maxAge: process.env.JWT_COOKIE_EXPIRATION * 1000
                 }).status(200).json({
                     message: "Login Successful"
                 });
