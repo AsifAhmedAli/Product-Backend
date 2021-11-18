@@ -4,13 +4,13 @@ const { TokenExpiredError } = jwt;
 
 const verifyToken = async (req, res, next) => {
     try {
-        let token = req.header('Authorization');
+        const cookieToken = req.cookies.jwtToken;
 
-        if (token) {
-            token = token.replace('Bearer ', '');
-        } else {
-            return res.status(401).json({ error: "Please provide token" })
+        if (!cookieToken || !cookieToken.token) {
+            return res.status(401).json({ error: "Unauthorized" })
         }
+
+        let token = cookieToken.token;
 
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
@@ -20,10 +20,8 @@ const verifyToken = async (req, res, next) => {
                 return res.status(401).json({ error: "Invalid token" })
             }
             req.user = decoded;
-            req.token = token;
             next();
         })
-
 
     } catch (err) {
         res.status(401).json({ error: err.message })

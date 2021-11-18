@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./db/mongodb');
 const runCronSchedule = require('./lib/cronjob');
 const apicache = require("apicache");
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,6 +14,7 @@ const cache = apicache.middleware;
 dotenv.config();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.set('trust proxy', 1);       // For reverse proxy servers
 // app.use(cache('30 seconds'))
 

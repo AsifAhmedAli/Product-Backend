@@ -59,7 +59,6 @@ const userControllers = {
                             // Initialize Related Schemas
                             await initializeSchemas(MongoUserId);
 
-
                             if (ifSaved) {
                                 // Check if referral link is present
                                 if (req.query.referrer) {
@@ -115,16 +114,14 @@ const userControllers = {
                 return res.status(400).json({ error: "User is blocked, Contact Administration" });
             }
 
-            // // Check if verified
+            // // Check if not verified (Verification is done via email)
             // if (!user.verified) {
             //     return res.status(400).json({ error: "User is not verified" });
             // }
 
             const isMatch = await bcrypt.compare(password, user.password);
 
-
             if (isMatch) {
-
                 user.password = null;
 
                 // Create JWT Payload
@@ -134,25 +131,19 @@ const userControllers = {
                 };
 
                 // Sign token
-                jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRATION}` }, async (err, token) => {
-                    if (err) {
-                        return res.status(500).json({ error: "Error signing token" });
-                    }
+                const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRATION}` });
+                if (!token) {
+                    return res.status(500).json({ error: "Error signing token" });
+                }
+                // Save refresh token
+                const refreshToken = await RefreshToken.createToken(user);
 
-                    // Save refresh token
-                    const refreshToken = await RefreshToken.createToken(user);
-
-                    return res.status(200).json({
-                        token: "Bearer " + token,
-                        refreshToken: refreshToken,
-                        user: {
-                            name: user.name,
-                            username: user.username,
-                            email: user.email,
-                            role: user.role,
-                        }
-                    });
-                })
+                return res.cookie('jwtToken', { token, refreshToken }, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                }).status(200).json({
+                    message: "Login Successful"
+                });
 
             } else {
                 return res.status(400).json({ error: "Password incorrect" });
@@ -190,6 +181,13 @@ const userControllers = {
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
+    },
+
+    logout: (req, res) => {
+        return res
+            .clearCookie("jwtToken")
+            .status(200)
+            .json({ message: "Successfully logged out 😏 🍀" });
     }
 }
 

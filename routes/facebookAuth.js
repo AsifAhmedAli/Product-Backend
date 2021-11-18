@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const axios = require("axios");
 const User = require('../model/User');
 const querystring = require("querystring");
-const initializeSchemas = require('../helpers/initializeSchemas');
+const initializeSchemas = require('../db/initializeSchemas');
 
 const REDIRECT_URI = "auth/facebook";
 const SERVER_URI = `http://localhost:${process.env.PORT}`;

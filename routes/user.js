@@ -15,4 +15,8 @@ router.post("/signup", userControllers.signup)
 // @route   POST
 router.post("/signin", userControllers.signin)
 
+// @desc    user/logout
+// @route   GET
+router.get("/logout", userControllers.logout)
+
 module.exports = router;
