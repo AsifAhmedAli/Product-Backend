@@ -13,7 +13,13 @@ const cache = apicache.middleware;
 // Middlewares
 dotenv.config();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: [
+        `${process.env.FRONT_URL}`,
+        'http://localhost:3000'
+    ],
+    credentials: true
+}));
 app.use(cookieParser());
 app.set('trust proxy', 1);       // For reverse proxy servers
 // app.use(cache('30 seconds'))
