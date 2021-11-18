@@ -138,7 +138,7 @@ const userControllers = {
                 // Save refresh token
                 const refreshToken = await RefreshToken.createToken(user);
 
-                return res.cookie('jwtToken', { token, refreshToken }, {
+                return res.cookie('jwt_tokens', { token, refreshToken }, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                 }).status(200).json({
@@ -185,7 +185,7 @@ const userControllers = {
 
     logout: (req, res) => {
         return res
-            .clearCookie("jwtToken")
+            .clearCookie("jwt_tokens")
             .status(200)
             .json({ message: "Successfully logged out 😏 🍀" });
     }

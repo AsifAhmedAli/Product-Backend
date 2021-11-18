@@ -4,7 +4,7 @@ const { TokenExpiredError } = jwt;
 
 const verifyToken = async (req, res, next) => {
     try {
-        const cookieToken = req.cookies.jwtToken;
+        const cookieToken = req.cookies.jwt_tokens;
 
         if (!cookieToken || !cookieToken.token) {
             return res.status(401).json({ error: "Unauthorized" })
