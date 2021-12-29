@@ -59,7 +59,9 @@ JWT_REFRESH_EXPIRATION=8400<br/>
  - Better options like **Sendgrid** are considerable as per scalability and more better functionality.
  - Nodemailer can be replaced with Sendgrid because of better performance reasons.
  
-
+## Deployment options to consider
+ - DigitalOcean (Ubuntu Droplet with Mongodb Atlas as DB)
+ - Amazon EC2 with Mongodb Atlas
 
 # Routes
 ### Authentication 
