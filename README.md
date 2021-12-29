@@ -26,7 +26,7 @@ npm start
 replace `.example.env` file with `.env`<br/>
 
 Following are the Secrets & API Keys used in .env: <br/>
-`you can remove these later on After project completion` <br/>
+`you can remove these later from here After copying` <br/>
 
 PORT=5000<br/>
 MONGO_URI=mongodb://localhost:27017/startDB<br/>
