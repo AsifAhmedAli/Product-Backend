@@ -1,11 +1,10 @@
 # Product Node API
 
-RestApi for the Product of Mexil Software Solutions with Node & Express
+Backend API is consistent of following stack:
+ - Nodejs
+ - Express
+ - Mongodb
 
-# Pre-requisites
-
-## Set the environment variables
-replace `.example.env` with `.env`
 
 ## Quick Start
 
@@ -21,8 +20,36 @@ Then start the server
 npm start
 ```
 
+# Pre-requisites
+
+## Set the environment variables
+replace `.example.env` file with `.env`<br/>
+
+Following are the Secrets & API Keys used in .env: <br/>
+`you can remove these later on After project completion` <br/>
+
+PORT=5000<br/>
+MONGO_URI=mongodb://localhost:27017/startDB<br/>
+JWT_SECRET=secret<br/>
+FRONT_URL=https://www.example.com<br/>
+YOUTUBE_API_KEY=AIzaSyCIuFMZKeXvvRmYfxEn2uBGaJFXivzcE1Y<br/>
+GOOGLE_CLIENT_ID=1040995054347-p9hqso6qeh4i8lenfofoijcpqhmkamci.apps.googleusercontent.com<br/>
+GOOGLE_CLIENT_SECRET=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<br/>
+FACEBOOK_APP_ID=3015667075428557<br/>
+FACEBOOK_APP_SECRET=33d79f1e057d6dc86ea7add5aabc0d64<br/>
+JWT_EXPIRATION=3600s<br/>
+JWT_COOKIE_EXPIRATION=3600<br/>
+JWT_REFRESH_EXPIRATION=8400<br/>
+
+## Authentication
+ - Cookies are used in backend to store Token credentials after User logs In.
+ - Middleware handles the Logic behind the **Access Tokens** and **Role Based Auth** machanism.
+ - **_Refresh Tokens needs implementation yet_**.
+ - For Access to routes, All the protected routes must be sent with the following Header format:
+    - `Authorization: Bearer <TokenHash>`
+
 # Routes
-### User Routes 
+### Authentication 
   - **POST** http://localhost:5000/user/signin (***Request Data***: email, password)  
   - **POST** http://localhost:5000/user/signup (***Request Data***: name, username, email, password, contact)
 
