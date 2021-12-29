@@ -41,12 +41,25 @@ JWT_EXPIRATION=3600s<br/>
 JWT_COOKIE_EXPIRATION=3600<br/>
 JWT_REFRESH_EXPIRATION=8400<br/>
 
+# Important Concepts
+
 ## Authentication
  - Cookies are used in backend to store Token credentials after User logs In.
  - Middleware handles the Logic behind the **Access Tokens** and **Role Based Auth** machanism.
  - **_Refresh Tokens needs implementation yet_**.
  - For Access to routes, All the protected routes must be sent with the following Header format:
     - `Authorization: Bearer <TokenHash>`
+
+## Images Upload
+ - **_Cloudinary_** services can be used for Images uploading and assets handling.
+ - Or Local uploads functionality can be used. **It depends on the server logic and deployment options**
+
+## Email Notifications & Verification
+ - Currently **Nodemailer** is working as email Handler.
+ - Better options like **Sendgrid** are considerable as per scalability and more better functionality.
+ - Nodemailer can be replaced with Sendgrid because of better performance reasons.
+ 
+
 
 # Routes
 ### Authentication 
