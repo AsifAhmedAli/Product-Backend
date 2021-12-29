@@ -63,6 +63,14 @@ JWT_REFRESH_EXPIRATION=8400<br/>
  - DigitalOcean (Ubuntu Droplet with Mongodb Atlas as DB)
  - Amazon EC2 with Mongodb Atlas
 
+## Payment Gateways
+ - _**Payment gateways are not yet implemented, Needs to be implemented**_
+
+## Different APIs
+ - Youtube API (For handling youtube related functionality)
+ - Facebook API **(Auth)**
+ - Google API **(Auth)**
+
 # Routes
 ### Authentication 
   - **POST** http://localhost:5000/user/signin (***Request Data***: email, password)  
